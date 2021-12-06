@@ -7,20 +7,19 @@ public class LocationMap implements Map<Integer, Location> {
     private static final String LOCATIONS_FILE_NAME = "locations.txt";
     private static final String DIRECTIONS_FILE_NAME = "directions.txt";
 
-    private static HashMap<Integer, Location> locations = new HashMap<Integer, Location>();
-
-    transient int size;
+    private static HashMap<Integer, Location> locations = new HashMap<>();
 
 
     /** DONE
      * create a static locations HashMap
      */
     static {
-        /** TODO
+        /** DONE
          * create a FileLogger object
          */
+        FileLogger flog = new FileLogger();
 
-        /** TODO
+        /** DONE
          * create a ConsoleLogger object
          */
         ConsoleLogger clog = new ConsoleLogger();
@@ -52,111 +51,62 @@ public class LocationMap implements Map<Integer, Location> {
      * @return
      */
     @Override
-    public int size() { // DONE
-        return size;
+    public int size() { // TODO: FIX
+        return this.size();
     }
 
     @Override
     public boolean isEmpty() { // DONE
-        return size == 0;
+        return this.size() == 0;
     }
 
     @Override
     public boolean containsKey(Object key) { // DONE
-        if (!this.isEmpty()) {
-            for (var e : this.entrySet()) {
-                if (e.getValue() == key) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return this.containsKey(key);
     }
 
     @Override
     public boolean containsValue(Object value) { // DONE
-        if (!this.isEmpty()) {
-            for (var e : this.entrySet()) {
-                if (e.getValue() == value) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return this.containsValue(value);
     }
 
     @Override
     public Location get(Object key) {
-        if (!this.isEmpty()) {
-            for (var e : this.keySet()) {
-                if (e == key) {
-                    return this.get(e);
-                }
-            }
-        }
-        return null;
+        return this.get(key);
     }
 
     @Override
     public Location put(Integer key, Location value) {
-        // TODO: check if the value exists already, if it does use replace, otherwise putIfAbsent...
-        this.putIfAbsent(key, value);
-        this.replace(key, value);
-        return null;
+        return this.put(key, value);
     }
 
     @Override
     public Location remove(Object key) {
-        //TODO
-        return null;
+        return this.remove(key);
     }
 
     @Override
     public void putAll(Map<? extends Integer, ? extends Location> m) {
-        //TODO
+        this.putAll(m);
     }
 
     @Override
     public void clear() {
-        size = 0;
-        this.keySet().removeAll(this.keySet());
+        this.clear();
     }
 
     @Override
     public Set<Integer> keySet() {
-        Set<Integer> setOfKeys = new HashSet<>();
-        Integer[] keys = new Integer[size() + 1];
-        this.forEach((k, v) -> keys[k] = k);
-        Collections.addAll(setOfKeys, keys);
-        return setOfKeys;
+        return this.keySet();
     }
 
     @Override
     public Collection<Location> values() {
-        Set<Location> setOfValues = new HashSet<>();
-        Location[] arrayOfValues = new Location[size() + 1];
-        this.forEach((k, v) -> arrayOfValues[k] = v);
-        Collections.addAll(setOfValues, arrayOfValues);
-        return setOfValues;
+        return this.values();
     }
 
     @Override
     public Set<Entry<Integer, Location>> entrySet() {
-        Set<Entry<Integer, Location>> setOfEntries = new HashSet<>();
-        Integer[] keys = new Integer[size() + 1];
-        Location[] arrayOfValues = new Location[size() + 1];
-        Entry[] arrayOfEntries = new Entry[size() + 1];
-
-        this.forEach((k, v) -> keys[k] = k);
-        this.forEach((k, v) -> arrayOfValues[k] = v);
-
-        for (int i = 0; i < keys.length; i++) {
-            Map.Entry<Integer, Location> entry = new AbstractMap.SimpleEntry<>(keys[i], arrayOfValues[i]);
-            arrayOfEntries[i] = entry;
-        }
-
-        Collections.addAll(setOfEntries, arrayOfEntries);
-
-        return setOfEntries;
+        return entrySet();
     }
 }
