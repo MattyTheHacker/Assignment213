@@ -31,10 +31,13 @@ public class Mapping {
         Scanner stdIn = new Scanner(System.in);
         int currentLocation = INITIAL_LOCATION;
 
+
+        //locmap.forEach((k,v) -> v.getExits().forEach());
+
         while (true) {
             Location currentLoc = locmap.get(currentLocation);
 
-            String msg = (currentLoc.getLocationId() + currentLoc.getDescription());
+            String msg = (currentLoc.getDescription());
             flog.log(msg);
             clog.log(msg);
 
@@ -44,10 +47,10 @@ public class Mapping {
 
             Map<String, Integer> currentExits = currentLoc.getExits();
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("Available exits are ");
-            currentExits.forEach((k, v) -> sb.append(k).append(", "));
-            msg = sb.toString();
+            StringBuilder availableExits = new StringBuilder();
+            availableExits.append("Available exits are ");
+            currentExits.forEach((k, v) -> availableExits.append(k).append(", "));
+            msg = availableExits.toString();
             flog.log(msg);
             clog.log(msg);
 

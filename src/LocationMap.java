@@ -10,6 +10,11 @@ public class LocationMap implements Map<Integer, Location> {
     static {
         FileLogger flog = new FileLogger();
         ConsoleLogger clog = new ConsoleLogger();
+        StringBuilder availableLocations = new StringBuilder();
+        StringBuilder availableDirections = new StringBuilder();
+
+        availableDirections.append("Available directions:").append(System.lineSeparator());
+        availableLocations.append("Available locations:").append(System.lineSeparator());
 
         ArrayList<Map<String, Integer>> exitMaps = new ArrayList<>();
         Map<String, Integer> exits;
@@ -24,6 +29,9 @@ public class LocationMap implements Map<Integer, Location> {
                 locationId = Integer.parseInt(data[0]);
                 direction = data[1];
                 destination = Integer.parseInt(data[2]);
+
+                availableDirections.append(locationId).append(": ").append(direction)
+                        .append(": ").append(destination).append(System.lineSeparator());
 
                 if (exitMaps.size() == 0) {
                     exits = new HashMap<>();
@@ -58,6 +66,7 @@ public class LocationMap implements Map<Integer, Location> {
                 String description = line.substring(idSeparator + 1);
                 Location loc = new Location(locationId, description, exitMaps.get(locationId));
                 locations.put(locationId, loc);
+                availableLocations.append(locationId).append(": ").append(description).append(System.lineSeparator());
             }
         } catch (IOException e) {
             System.out.println("[ERROR] IO Exception");
@@ -66,6 +75,12 @@ public class LocationMap implements Map<Integer, Location> {
             System.out.println("[ERROR] Number Exception...");
             e.printStackTrace();
         }
+        availableDirections.deleteCharAt(availableDirections.length() - 1);
+        availableLocations.deleteCharAt(availableLocations.length() - 1);
+        flog.log(availableLocations.toString());
+        clog.log(availableLocations.toString());
+        flog.log(availableDirections.toString());
+        clog.log(availableDirections.toString());
     }
 
     @Override
