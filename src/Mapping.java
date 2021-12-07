@@ -14,6 +14,7 @@ public class Mapping {
     ConsoleLogger clog = new ConsoleLogger();
 
     public Mapping() {
+        vocabulary.put("QUIT", "Q");
         vocabulary.put("UP", "U");
         vocabulary.put("DOWN", "D");
         vocabulary.put("NORTH", "N");
@@ -24,7 +25,6 @@ public class Mapping {
         vocabulary.put("NORTHWEST", "NW");
         vocabulary.put("SOUTHEAST", "SE");
         vocabulary.put("SOUTHWEST", "SW");
-        vocabulary.put("QUIT", "Q");
     }
 
     public void mapping() {

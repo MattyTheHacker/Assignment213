@@ -26,6 +26,6 @@ public class Location {
         return description;
     }
     public Map<String, Integer> getExits() {
-        return exits; // TODO: check this is correct...
+        return exits;
     }
 }
