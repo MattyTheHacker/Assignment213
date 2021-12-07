@@ -38,17 +38,9 @@ public class Mapping {
             flog.log(msg);
             clog.log(msg);
 
-            /** DONE
-             * verify if the location is exit
-             */
-
             if (currentLoc.getLocationId() == 141 || currentLoc.getLocationId() == 0) {
                 break;
             }
-
-            /** DONE
-             * get a map of the exits for the location
-             */
 
             Map<String, Integer> currentExits = currentLoc.getExits();
 
@@ -77,11 +69,6 @@ public class Mapping {
                 }
             }
 
-            /** DONE
-             * if user can go in that direction, then set the location to that direction
-             * otherwise print an error message (to both console and file)
-             * check the ExpectedOutput files
-             */
             if (intendedDirection == null) {
                 flog.log(INVALID_DIRECTION);
                 clog.log(INVALID_DIRECTION);
