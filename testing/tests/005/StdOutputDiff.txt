@@ -1,8 +1,10 @@
-688,690c688,716
+686,688c686,716
 < Exception in thread "main" java.lang.NullPointerException
-< 	at Mapping.mapping(Mapping.java:76)
-< 	at Mapping.main(Mapping.java:83)
+< 	at Mapping.mapping(Mapping.java:80)
+< 	at Mapping.main(Mapping.java:87)
 ---
+> YOU ARE AT ONE END OF AN IMMENSE NORTH/SOUTH PASSAGE.
+> Available exits are Q, S, W, 
 > YOU ARE IN THE GIANT ROOM. THE CEILING HERE IS TOO HIGH UP FOR YOUR LAMP TO SHOW IT. CAVERNOUS PASSAGES LEAD EAST, NORTH, AND SOUTH. ON THE WEST WALL IS SCRAWLED THE INSCRIPTION, "FEE FIE FOE FOO" [SIC].
 > Available exits are Q, S, E, N, 
 > THE PASSAGE HERE IS BLOCKED BY A RECENT CAVE-IN.

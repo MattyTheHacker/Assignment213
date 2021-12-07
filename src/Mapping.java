@@ -61,19 +61,23 @@ public class Mapping {
             } else {
                 String[] words = usrInput.split(" ");
                 for (String s : words) {
-                    if (vocabulary.containsKey(s)) {
+                    if (vocabulary.containsKey(s) && (currentExits.containsKey(s)) || currentExits.containsKey(vocabulary.get(s))) {
                         intendedDirection = s;
                     } else {
                         intendedDirection = null;
                     }
                 }
             }
+
             if (intendedDirection == null) {
                 flog.log(INVALID_DIRECTION);
                 clog.log(INVALID_DIRECTION);
             } else {
-                String newLocation = vocabulary.get(intendedDirection);
-                currentLocation = currentExits.get(newLocation);
+                if (intendedDirection.equals("Q")) {
+                    intendedDirection = "QUIT";
+                }
+                String newDirection = vocabulary.get(intendedDirection);
+                currentLocation = currentExits.get(newDirection);
             }
         }
     }
