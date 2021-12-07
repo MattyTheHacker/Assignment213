@@ -14,25 +14,22 @@ public class Mapping {
     ConsoleLogger clog = new ConsoleLogger();
 
     public Mapping() {
-        vocabulary.put("Q", "QUIT");
-        vocabulary.put("U", "UP");
-        vocabulary.put("D", "DOWN");
-        vocabulary.put("N", "NORTH");
-        vocabulary.put("E", "EAST");
-        vocabulary.put("S", "SOUTH");
-        vocabulary.put("W", "WEST");
-        vocabulary.put("NE", "NORTHEAST");
-        vocabulary.put("NW", "NORTHWEST");
-        vocabulary.put("SE", "SOUTHEAST");
-        vocabulary.put("SW", "SOUTHWEST");
+        vocabulary.put("QUIT", "Q");
+        vocabulary.put("UP", "U");
+        vocabulary.put("DOWN", "D");
+        vocabulary.put("NORTH", "N");
+        vocabulary.put("EAST", "E");
+        vocabulary.put("SOUTH", "S");
+        vocabulary.put("WEST", "W");
+        vocabulary.put("NORTHEAST", "NE");
+        vocabulary.put("NORTHWEST", "NW");
+        vocabulary.put("SOUTHEAST", "SE");
+        vocabulary.put("SOUTHWEST", "SW");
     }
 
     public void mapping() {
         Scanner stdIn = new Scanner(System.in);
         int currentLocation = INITIAL_LOCATION;
-
-
-        //locmap.forEach((k,v) -> v.getExits().forEach());
 
         while (true) {
             Location currentLoc = locmap.get(currentLocation);
@@ -76,7 +73,9 @@ public class Mapping {
                 flog.log(INVALID_DIRECTION);
                 clog.log(INVALID_DIRECTION);
             } else {
-                currentLocation = currentExits.get(intendedDirection);
+                String newLocation;
+                newLocation = vocabulary.get(intendedDirection);
+                currentLocation = currentExits.get(newLocation);
             }
         }
     }
