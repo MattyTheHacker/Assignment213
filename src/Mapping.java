@@ -6,7 +6,7 @@ public class Mapping {
 
     public static final int INITIAL_LOCATION = 95;
     private static final String INVALID_DIRECTION = "You cannot go in that direction";
-    private static LocationMap locmap = new LocationMap();
+    private static final LocationMap locmap = new LocationMap();
 
     private static final HashMap<String, String> vocabulary = new HashMap<>();
 
@@ -14,7 +14,6 @@ public class Mapping {
     ConsoleLogger clog = new ConsoleLogger();
 
     public Mapping() {
-        vocabulary.put("QUIT", "Q");
         vocabulary.put("UP", "U");
         vocabulary.put("DOWN", "D");
         vocabulary.put("NORTH", "N");
@@ -25,6 +24,7 @@ public class Mapping {
         vocabulary.put("NORTHWEST", "NW");
         vocabulary.put("SOUTHEAST", "SE");
         vocabulary.put("SOUTHWEST", "SW");
+        vocabulary.put("QUIT", "Q");
     }
 
     public void mapping() {
