@@ -68,19 +68,17 @@ public class Mapping {
                     }
                 }
             }
-
             if (intendedDirection == null) {
                 flog.log(INVALID_DIRECTION);
                 clog.log(INVALID_DIRECTION);
             } else {
-                String newLocation;
-                newLocation = vocabulary.get(intendedDirection);
+                String newLocation = vocabulary.get(intendedDirection);
                 currentLocation = currentExits.get(newLocation);
             }
         }
     }
 
-    public static void main(String[] args) { // Maybe done ????
+    public static void main(String[] args) {
         Mapping mapping = new Mapping();
         mapping.mapping();
     }
