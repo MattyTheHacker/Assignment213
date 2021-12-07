@@ -12,22 +12,41 @@ public class LocationMap implements Map<Integer, Location> {
         FileLogger flog = new FileLogger();
         ConsoleLogger clog = new ConsoleLogger();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(DIRECTIONS_FILE_NAME))){
+        //TODO: Exits map, direction destination
+        ArrayList<Map<String, Integer>> exitMaps = new ArrayList<>();
+        Map<String, Integer> exits = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(DIRECTIONS_FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                int locationId; String exit; int destination;
+                int locationId;
+                String direction;
+                int destination;
                 String[] data = line.split(",");
                 locationId = Integer.parseInt(data[0]);
-                exit = data[1];
+                direction = data[1];
                 destination = Integer.parseInt(data[2]);
+                // TODO: combine exits into some structure to be passed to the other method...
+
+                if (exitMaps.size() == locationId - 1) {
+                    exits = exitMaps.get(locationId);
+                    exits.put(direction, destination);
+                } else {
+                    exits = new HashMap<>();
+                    exits.put(direction, destination);
+                    exitMaps.add(exits);
+                }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("[ERROR] IO Exception...");
             e.printStackTrace();
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("[ERROR] Number Exception...");
             e.printStackTrace();
         }
+
+        ArrayList<Map<Integer, Location>> locs = new ArrayList<>();
+
 
         try (BufferedReader reader = new BufferedReader(new FileReader(LOCATIONS_FILE_NAME))) {
             String line;
@@ -35,13 +54,13 @@ public class LocationMap implements Map<Integer, Location> {
                 int idSeparator = line.indexOf(",");
                 int locationId = Integer.parseInt(line.substring(0, idSeparator));
                 String description = line.substring(idSeparator + 1);
-                Map<String, Integer> exits = new HashMap<>();
+                // TODO: create exits map
                 Location loc = new Location(locationId, description, exits);
             }
         } catch (IOException e) {
             System.out.println("[ERROR] IO Exception");
             e.printStackTrace();
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("[ERROR] Number Exception...");
             e.printStackTrace();
         }
