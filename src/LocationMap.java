@@ -12,7 +12,6 @@ public class LocationMap implements Map<Integer, Location> {
         FileLogger flog = new FileLogger();
         ConsoleLogger clog = new ConsoleLogger();
 
-        //TODO: Exits map, direction destination
         ArrayList<Map<String, Integer>> exitMaps = new ArrayList<>();
         Map<String, Integer> exits = new HashMap<>();
 
@@ -26,7 +25,6 @@ public class LocationMap implements Map<Integer, Location> {
                 locationId = Integer.parseInt(data[0]);
                 direction = data[1];
                 destination = Integer.parseInt(data[2]);
-                // TODO: combine exits into some structure to be passed to the other method...
 
                 if (exitMaps.size() == locationId - 1) {
                     exits = exitMaps.get(locationId);
@@ -47,15 +45,14 @@ public class LocationMap implements Map<Integer, Location> {
 
         ArrayList<Map<Integer, Location>> locs = new ArrayList<>();
 
-
         try (BufferedReader reader = new BufferedReader(new FileReader(LOCATIONS_FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 int idSeparator = line.indexOf(",");
                 int locationId = Integer.parseInt(line.substring(0, idSeparator));
                 String description = line.substring(idSeparator + 1);
-                // TODO: create exits map
-                Location loc = new Location(locationId, description, exits);
+                Location loc = new Location(locationId, description, exitMaps.get(locationId));
+                locations.put(locationId, loc);
             }
         } catch (IOException e) {
             System.out.println("[ERROR] IO Exception");
@@ -64,75 +61,117 @@ public class LocationMap implements Map<Integer, Location> {
             System.out.println("[ERROR] Number Exception...");
             e.printStackTrace();
         }
-
-        /**TODO
-         * Read from DIRECTIONS_FILE_NAME so that a user can move from A to B, i.e. current location to next location
-         * use try-with-resources/catch block for the FileReader
-         * extract the 3 elements  on each line: location, direction, destination
-         * print all locations, directions and destinations to both console and file
-         * check the ExpectedOutput files
-         * for each location, create a new location object and add its exit
-         */
-
     }
+
+    transient int size = 0;
 
     @Override
     public int size() { // DONE
-        return this.size();
+        return size;
     }
 
     @Override
     public boolean isEmpty() { // DONE
-        return this.size() == 0;
+        return size == 0;
     }
 
     @Override
     public boolean containsKey(Object key) { // DONE
-        return this.containsKey(key);
+        if (!this.isEmpty()) {
+            for (var e : this.entrySet()) {
+                if (e.getValue() == key) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean containsValue(Object value) { // DONE
-        return this.containsValue(value);
+        if (!this.isEmpty()) {
+            for (var e : this.entrySet()) {
+                if (e.getValue() == value) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
-    public Location get(Object key) {
-        return this.get(key);
+    public Location get(Object key) { // DONE
+        if (!this.isEmpty()) {
+            for (var e : this.keySet()) {
+                if (e == key) {
+                    return this.get(e);
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public Location put(Integer key, Location value) {
-        return this.put(key, value);
+        // TODO: check if the value exists already, if it does use replace, otherwise putIfAbsent...
+        this.putIfAbsent(key, value);
+        this.replace(key, value);
+        return null;
     }
 
     @Override
     public Location remove(Object key) {
-        return this.remove(key);
+        //TODO: find the Entry using the key and delete it...
+        return null;
     }
 
     @Override
-    public void putAll(Map<? extends Integer, ? extends Location> m) {
-        this.putAll(m);
+    public void putAll(Map<? extends Integer, ? extends Location> m) { // DONE
+        m.forEach(this::put);
+        m.forEach((k, v) -> size++);
     }
 
     @Override
-    public void clear() {
-        this.clear();
+    public void clear() { // DONE
+        this.keySet().removeAll(this.keySet());
+        size = 0;
     }
 
     @Override
-    public Set<Integer> keySet() {
-        return this.keySet();
+    public Set<Integer> keySet() { // DONE
+        Set<Integer> setOfKeys = new HashSet<>();
+        Integer[] keys = new Integer[size() + 1];
+        this.forEach((k, v) -> keys[k] = k);
+        Collections.addAll(setOfKeys, keys);
+        return setOfKeys;
     }
 
     @Override
-    public Collection<Location> values() {
-        return this.values();
+    public Collection<Location> values() { // DONE
+        Set<Location> setOfValues = new HashSet<>();
+        Location[] arrayOfValues = new Location[size() + 1];
+        this.forEach((k, v) -> arrayOfValues[k] = v);
+        Collections.addAll(setOfValues, arrayOfValues);
+        return setOfValues;
     }
 
     @Override
-    public Set<Entry<Integer, Location>> entrySet() {
-        return this.entrySet();
+    public Set<Entry<Integer, Location>> entrySet() { // DONE
+        Set<Entry<Integer, Location>> setOfEntries = new HashSet<>();
+        Integer[] keys = new Integer[size() + 1];
+        Location[] arrayOfValues = new Location[size() + 1];
+        Entry[] arrayOfEntries = new Entry[size() + 1];
+
+        this.forEach((k, v) -> keys[k] = k);
+        this.forEach((k, v) -> arrayOfValues[k] = v);
+
+        for (int i = 0; i < keys.length; i++) {
+            Map.Entry<Integer, Location> entry = new AbstractMap.SimpleEntry<>(keys[i], arrayOfValues[i]);
+            arrayOfEntries[i] = entry;
+        }
+
+        Collections.addAll(setOfEntries, arrayOfEntries);
+
+        return setOfEntries;
     }
 }

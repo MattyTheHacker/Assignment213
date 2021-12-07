@@ -1,16 +1,14 @@
 import java.io.Console;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Mapping {
 
     public static final int INITIAL_LOCATION = 95;
+    private static final String INVALID_DIRECTION = "You cannot go in that direction";
 
-    /**
-     * TODO
-     * create a static LocationMap object
-     */
     private static LocationMap locmap = new LocationMap();
     private static HashMap<String, String> vocabulary = new HashMap<>();
     FileLogger flog = new FileLogger();
@@ -34,46 +32,61 @@ public class Mapping {
         Scanner stdIn = new Scanner(System.in);
         int currentLocation = INITIAL_LOCATION;
 
-        while (true) { // nah fuck that
+        while (true) {
+            Location currentLoc = locmap.get(currentLocation);
 
-            /** TODO
-             * get the location and print its description to both console and file
-             * use the FileLogger and ConsoleLogger objects
-             */
+            String msg = (currentLoc.getLocationId() + currentLoc.getDescription());
+            flog.log(msg);
+            clog.log(msg);
 
             /** TODO
              * verify if the location is exit
              */
 
-            /** TODO
+
+
+            /** DONE
              * get a map of the exits for the location
              */
 
-            /** TODO
-             * print the available exits (to both console and file)
-             * crosscheck with the ExpectedOutput files
-             * Hint: you can use a StringBuilder to append the exits
-             */
+            Map<String, Integer> currentExits = currentLoc.getExits();
 
-            /** TODO
-             * input a direction
-             * ensure that the input is converted to uppercase
-             */
+            StringBuilder sb = new StringBuilder();
+            sb.append("Available exits are ");
+            currentExits.forEach((k, v) -> sb.append(k).append(", "));
+            msg = sb.toString();
+            flog.log(msg);
+            clog.log(msg);
 
-            /** TODO
-             * are we dealing with a letter / word for the direction to go to?
-             * available inputs are: a letter(the HashMap value), a word (the HashMap key), a string of words that contains the key
-             * crosscheck with the ExpectedInput and ExpectedOutput files for examples of inputs
-             * if the input contains multiple words, extract each word
-             * find the direction to go to using the vocabulary mapping
-             * if multiple viable directions are specified in the input, choose the last one
-             */
+            String usrInput = stdIn.nextLine().toUpperCase();
+            String intendedDirection = null;
 
-            /** TODO
+            if (!usrInput.strip().contains(" ")) {
+                if (vocabulary.containsKey(usrInput) || vocabulary.containsValue(usrInput)) {
+                    intendedDirection = usrInput;
+                }
+            } else {
+                String[] words = usrInput.split(" ");
+                for (String s : words) {
+                    if (vocabulary.containsKey(s)) {
+                        intendedDirection = s;
+                    } else {
+                        intendedDirection = null;
+                    }
+                }
+            }
+
+            /** DONE
              * if user can go in that direction, then set the location to that direction
              * otherwise print an error message (to both console and file)
              * check the ExpectedOutput files
              */
+            if (intendedDirection == null) {
+                flog.log(INVALID_DIRECTION);
+                clog.log(INVALID_DIRECTION);
+            } else {
+                currentLocation = currentExits.get(intendedDirection);
+            }
         }
     }
 
