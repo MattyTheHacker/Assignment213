@@ -10,11 +10,8 @@ public class FileLogger implements Logger {
             File output = new File(FILE_LOGGER_NAME);
             boolean deleted = output.delete();
             boolean created = output.createNewFile();
-            if (output.exists()){
-                System.out.println("[INFO] File deletion and creation was successful...");
-            }
         } catch (IOException e) {
-            System.out.println("The new file could not be created...");
+            System.out.println("[WARN] The new file could not be created...");
             e.printStackTrace();
         }
     }

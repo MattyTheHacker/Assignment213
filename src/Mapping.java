@@ -1,6 +1,4 @@
-import java.io.Console;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -8,9 +6,10 @@ public class Mapping {
 
     public static final int INITIAL_LOCATION = 95;
     private static final String INVALID_DIRECTION = "You cannot go in that direction";
-
     private static LocationMap locmap = new LocationMap();
-    private static HashMap<String, String> vocabulary = new HashMap<>();
+
+    private static final HashMap<String, String> vocabulary = new HashMap<>();
+
     FileLogger flog = new FileLogger();
     ConsoleLogger clog = new ConsoleLogger();
 
@@ -39,11 +38,13 @@ public class Mapping {
             flog.log(msg);
             clog.log(msg);
 
-            /** TODO
+            /** DONE
              * verify if the location is exit
              */
 
-
+            if (currentLoc.getLocationId() == 141 || currentLoc.getLocationId() == 0) {
+                break;
+            }
 
             /** DONE
              * get a map of the exits for the location
@@ -61,7 +62,7 @@ public class Mapping {
             String usrInput = stdIn.nextLine().toUpperCase();
             String intendedDirection = null;
 
-            if (!usrInput.strip().contains(" ")) {
+            if (!usrInput.trim().contains(" ")) {
                 if (vocabulary.containsKey(usrInput) || vocabulary.containsValue(usrInput)) {
                     intendedDirection = usrInput;
                 }
