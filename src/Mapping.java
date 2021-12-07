@@ -17,11 +17,17 @@ public class Mapping {
     ConsoleLogger clog = new ConsoleLogger();
 
     public Mapping() {
-        //vocabulary.put("QUIT", "Q"); //example
-        /** TODO
-         * complete the vocabulary HashMap <Key, Value> with all directions.
-         * use the directions.txt file and crosscheck with the ExpectedInput and ExpectedOutput files to find the keys and the values
-         */
+        vocabulary.put("Q", "QUIT");
+        vocabulary.put("U", "UP");
+        vocabulary.put("D", "DOWN");
+        vocabulary.put("N", "NORTH");
+        vocabulary.put("E", "EAST");
+        vocabulary.put("S", "SOUTH");
+        vocabulary.put("W", "WEST");
+        vocabulary.put("NE", "NORTHEAST");
+        vocabulary.put("NW", "NORTHWEST");
+        vocabulary.put("SE", "SOUTHEAST");
+        vocabulary.put("SW", "SOUTHWEST");
     }
 
     public void mapping() {

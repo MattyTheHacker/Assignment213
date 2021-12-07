@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-//class that behaves like a map
 public class LocationMap implements Map<Integer, Location> {
 
     private static final String LOCATIONS_FILE_NAME = "locations.txt";
@@ -9,29 +8,43 @@ public class LocationMap implements Map<Integer, Location> {
 
     private static HashMap<Integer, Location> locations = new HashMap<>();
 
-
-    /** DONE
-     * create a static locations HashMap
-     */
     static {
-        /** DONE
-         * create a FileLogger object
-         */
         FileLogger flog = new FileLogger();
-
-        /** DONE
-         * create a ConsoleLogger object
-         */
         ConsoleLogger clog = new ConsoleLogger();
 
-        /** TODO
-         *          * Read from LOCATIONS_FILE_NAME so that a user can navigate from one location to another
-         *          * use try-with-resources/catch block for the FileReader
-         *          * extract the location and the description on each line
-         *          * print all locations and descriptions to both console and file
-         *          * check the ExpectedOutput files
-         *          * put each location in the locations HashMap using temporary empty hashmaps for exits
-         */
+        try (BufferedReader reader = new BufferedReader(new FileReader(DIRECTIONS_FILE_NAME))){
+            String line;
+            while ((line = reader.readLine()) != null) {
+                int locationId; String exit; int destination;
+                String[] data = line.split(",");
+                locationId = Integer.parseInt(data[0]);
+                exit = data[1];
+                destination = Integer.parseInt(data[2]);
+            }
+        } catch (IOException e){
+            System.out.println("[ERROR] IO Exception...");
+            e.printStackTrace();
+        } catch (NumberFormatException e){
+            System.out.println("[ERROR] Number Exception...");
+            e.printStackTrace();
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(LOCATIONS_FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                int idSeparator = line.indexOf(",");
+                int locationId = Integer.parseInt(line.substring(0, idSeparator));
+                String description = line.substring(idSeparator + 1);
+                Map<String, Integer> exits = new HashMap<>();
+                Location loc = new Location(locationId, description, exits);
+            }
+        } catch (IOException e) {
+            System.out.println("[ERROR] IO Exception");
+            e.printStackTrace();
+        } catch (NumberFormatException e){
+            System.out.println("[ERROR] Number Exception...");
+            e.printStackTrace();
+        }
 
         /**TODO
          * Read from DIRECTIONS_FILE_NAME so that a user can move from A to B, i.e. current location to next location
@@ -44,14 +57,8 @@ public class LocationMap implements Map<Integer, Location> {
 
     }
 
-    /**
-     * TODO
-     * implement all methods for Map
-     *
-     * @return
-     */
     @Override
-    public int size() { // TODO: FIX
+    public int size() { // DONE
         return this.size();
     }
 
@@ -107,6 +114,6 @@ public class LocationMap implements Map<Integer, Location> {
 
     @Override
     public Set<Entry<Integer, Location>> entrySet() {
-        return entrySet();
+        return this.entrySet();
     }
 }

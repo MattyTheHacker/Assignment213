@@ -19,15 +19,12 @@ public class Location {
     protected void addExit(String direction, int location) {
         exits.put(direction, location);
     }
-
     public int getLocationId() {
         return locationId;
     }
-
     public String getDescription() {
         return description;
     }
-
     public Map<String, Integer> getExits() {
         return exits; // TODO: check this is correct...
     }

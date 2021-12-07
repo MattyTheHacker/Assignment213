@@ -1,4 +1,6 @@
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class FileLogger implements Logger {
     private static final String FILE_LOGGER_NAME = "StudentFileOutput.txt";
@@ -6,30 +8,15 @@ public class FileLogger implements Logger {
     static {
         try {
             File output = new File(FILE_LOGGER_NAME);
-
-            if (output.delete()) {
-                System.out.println("[INFO] File deleted successfully...");
-                if (output.createNewFile()) {
-                    System.out.println("[INFO] File created successfully...");
-                } else {
-                    System.out.println("[WARN] The file was not created, but an exception wasn't thrown...");
-                }
-            } else {
-                System.out.println("[WARN] The file couldn't be deleted, but an exception wasn't thrown...");
+            boolean deleted = output.delete();
+            boolean created = output.createNewFile();
+            if (output.exists()){
+                System.out.println("[INFO] File deletion and creation was successful...");
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("The File wasn't found...");
-            e.printStackTrace();
         } catch (IOException e) {
             System.out.println("The new file could not be created...");
             e.printStackTrace();
         }
-
-        /** DONE
-         * create a new File object for FILE_LOGGER_NAME
-         * if the file already exists, delete it first
-         * use try/catch block
-         */
     }
 
     @Override
@@ -43,11 +30,5 @@ public class FileLogger implements Logger {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /** DONE
-         * create a new FileWriter in append mode
-         * write the message to file
-         * check the ExpectedOutput files
-         * use try-with-resources/catch block
-         */
     }
 }
