@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,20 +13,16 @@ public class FileLogger implements Logger {
             boolean created = output.createNewFile();
         } catch (IOException e) {
             System.out.println("[WARN] The new file could not be created...");
-            e.printStackTrace();
         }
     }
 
     @Override
     public void log(String message) {
-        try {
-            FileWriter fw = new FileWriter(FILE_LOGGER_NAME, true);
-            fw.write(message);
-            fw.write(System.lineSeparator());
-            fw.flush();
-            fw.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_LOGGER_NAME, true))) {
+            writer.write(message);
+            writer.write(System.lineSeparator());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("[WARN] An error prevented the message: " + message + " from being written...");
         }
     }
 }

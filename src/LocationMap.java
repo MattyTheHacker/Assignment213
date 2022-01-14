@@ -16,8 +16,19 @@ public class LocationMap implements Map<Integer, Location> {
         availableDirections.append("Available directions:").append(System.lineSeparator());
         availableLocations.append("Available locations:").append(System.lineSeparator());
 
-        ArrayList<Map<String, Integer>> exitMaps = new ArrayList<>();
-        Map<String, Integer> exits;
+        try (BufferedReader reader = new BufferedReader(new FileReader(LOCATIONS_FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                int idSeparator = line.indexOf(",");
+                int locationId = Integer.parseInt(line.substring(0, idSeparator));
+                String description = line.substring(idSeparator + 1);
+                Location loc = new Location(locationId, description, new HashMap<>());
+                locations.put(locationId, loc);
+                availableLocations.append(locationId).append(": ").append(description).append(System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(DIRECTIONS_FILE_NAME))) {
             String line;
@@ -33,48 +44,12 @@ public class LocationMap implements Map<Integer, Location> {
                 availableDirections.append(locationId).append(": ").append(direction)
                         .append(": ").append(destination).append(System.lineSeparator());
 
-                if (exitMaps.size() == 0) {
-                    exits = new HashMap<>();
-                    exits.put(direction, destination);
-                    exitMaps.add(exits);
-                } else {
-                    try {
-                        exits = exitMaps.get(locationId);
-                        exits.put(direction, destination);
-                    } catch (Exception e) {
-                        exits = new HashMap<>();
-                        exits.put(direction, destination);
-                        exitMaps.add(exits);
-                    }
-                }
+                locations.get(locationId).addExit(direction, destination);
             }
         } catch (IOException e) {
-            System.out.println("[ERROR] IO Exception...");
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println("[ERROR] Number Exception...");
             e.printStackTrace();
         }
 
-        ArrayList<Map<Integer, Location>> locs = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(LOCATIONS_FILE_NAME))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                int idSeparator = line.indexOf(",");
-                int locationId = Integer.parseInt(line.substring(0, idSeparator));
-                String description = line.substring(idSeparator + 1);
-                Location loc = new Location(locationId, description, exitMaps.get(locationId));
-                locations.put(locationId, loc);
-                availableLocations.append(locationId).append(": ").append(description).append(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            System.out.println("[ERROR] IO Exception");
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println("[ERROR] Number Exception...");
-            e.printStackTrace();
-        }
         availableDirections.deleteCharAt(availableDirections.length() - 1);
         availableLocations.deleteCharAt(availableLocations.length() - 1);
         flog.log(availableLocations.toString());

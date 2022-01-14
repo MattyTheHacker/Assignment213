@@ -15,15 +15,15 @@ public class Mapping {
 
     public Mapping() {
         vocabulary.put("QUIT", "Q");
-        vocabulary.put("UP", "U");
         vocabulary.put("DOWN", "D");
+        vocabulary.put("SOUTHEAST", "SE");
+        vocabulary.put("UP", "U");
         vocabulary.put("NORTH", "N");
         vocabulary.put("EAST", "E");
         vocabulary.put("SOUTH", "S");
         vocabulary.put("WEST", "W");
         vocabulary.put("NORTHEAST", "NE");
         vocabulary.put("NORTHWEST", "NW");
-        vocabulary.put("SOUTHEAST", "SE");
         vocabulary.put("SOUTHWEST", "SW");
     }
 
@@ -38,7 +38,7 @@ public class Mapping {
             flog.log(msg);
             clog.log(msg);
 
-            if (currentLoc.getLocationId() == 141 || currentLoc.getLocationId() == 0) {
+            if (currentLoc.getLocationId() == 0) {
                 break;
             }
 
@@ -51,31 +51,45 @@ public class Mapping {
             flog.log(msg);
             clog.log(msg);
 
-            String usrInput = stdIn.nextLine().toUpperCase();
+            String usrInput = null;
+
+            try {
+                usrInput = stdIn.nextLine().toUpperCase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             String intendedDirection = null;
 
+
             if (!usrInput.trim().contains(" ")) {
-                if (vocabulary.containsKey(usrInput) || vocabulary.containsValue(usrInput)) {
-                    intendedDirection = usrInput;
+                if (currentExits.containsKey(usrInput) || currentExits.containsKey(vocabulary.get(usrInput))) {
+                    if (vocabulary.containsKey(usrInput)) {
+                        intendedDirection = usrInput;
+                    } else if (vocabulary.containsValue(usrInput)) {
+                        for (Map.Entry<String, String> entry : vocabulary.entrySet()) {
+                            if (usrInput.equals(entry.getValue())) {
+                                intendedDirection = entry.getKey();
+                            }
+                        }
+                    }
                 }
             } else {
                 String[] words = usrInput.split(" ");
                 for (String s : words) {
-                    if (vocabulary.containsKey(s) && (currentExits.containsKey(s)) || currentExits.containsKey(vocabulary.get(s))) {
+                    if (vocabulary.containsKey(s) && currentExits.containsKey(vocabulary.get(s))) {
                         intendedDirection = s;
-                    } else {
-                        intendedDirection = null;
                     }
                 }
+            }
+
+            if (intendedDirection != null && intendedDirection.equals("Q")) {
+                intendedDirection = "QUIT";
             }
 
             if (intendedDirection == null) {
                 flog.log(INVALID_DIRECTION);
                 clog.log(INVALID_DIRECTION);
             } else {
-                if (intendedDirection.equals("Q")) {
-                    intendedDirection = "QUIT";
-                }
                 String newDirection = vocabulary.get(intendedDirection);
                 currentLocation = currentExits.get(newDirection);
             }
